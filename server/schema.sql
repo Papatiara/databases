@@ -1,38 +1,38 @@
 CREATE DATABASE IF NOT EXISTS chat;
 
--- if(users) {
--- DROP TABLE users;
--- }
--- if(rooms) {
--- DROP TABLE rooms;
--- }
--- if(messages) {
--- DROP TABLE messages;
--- }
 USE chat;
 
 
 CREATE TABLE IF NOT EXISTS users (
   userId int NOT NULL AUTO_INCREMENT,
   username varchar(255),
-  PRIMARY KEY (userId)
-  
+  PRIMARY KEY (userId),
+  UNIQUE (userId, username)
 );
 
--- CREATE TABLE rooms (
---   roomId int PRIMARY KEY,
---   roomname varchar(255)
--- );
+CREATE TABLE IF NOT EXISTS rooms (
+  roomId int NOT NULL AUTO_INCREMENT,
+  roomname varchar(255),
+  PRIMARY KEY (roomId),
+  UNIQUE (roomId, roomname)
+);
 
 CREATE TABLE IF NOT EXISTS messages (
   id int NOT NULL AUTO_INCREMENT,
-  username varchar(255),
+  userId int ,
   message varchar(255),
-  roomname varchar(255),
+  roomId int,
   PRIMARY KEY (id)
-  -- FOREIGN KEY (UserID) REFERENCES users(userId),
-  -- FOREIGN KEY (RoomID) REFERENCES rooms(roomId)
+  FOREIGN KEY (userId) REFERENCES users(userId),
+  FOREIGN KEY (roomId) REFERENCES rooms(roomId)
 );
+
+  -- server: 'http://parse.CAMPUS.hackreactor.com/chatterbox/classes/messages',
+  -- username: 'anonymous',
+  -- roomname: 'lobby',
+  -- lastMessageId: 0,
+  -- friends: {},
+  -- messages: [],
 
 
 

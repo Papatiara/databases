@@ -4,39 +4,23 @@ var models = require('../models');
 module.exports = {
   messages: {
     get: function (req, res) {
-      sendResponse(res, {results: messages});
+      models.messages.get(res); 
     }, // a function which handles a get request for all messages
     post: function (req, res) {
-      collectData(req, function(message) {
-      message.objectId = ++objectIdCounter;
-      messages.push(message);
-      sendResponse(res, {objectId: message.objectId}, 201);
-    });
+      models.messages.post(req.body, res);
       
     } // a function which handles posting a message to the database
   },
 
   users: {
     // Ditto as above
-    get: function (req, res) {
-      
-      
+    get: function (req, res) {   
+      models.users.get(res);
     },
-    post: function (req, res) {}
+    post: function (req, res) {
+      console.log('here ----->', req.body);
+      models.users.post(req.body, res);
+    }
   }
 };
 
-sendResponse = function(response, data, statusCode) {
-  statusCode = statusCode || 200;
-  response.writeHead(statusCode, headers);
-  response.end(JSON.stringify(data));
-};
-collectData = function(request, callback) {
-  var data = '';
-  request.on('data', function(chunk) {
-    data += chunk;
-  });
-  request.on('end', function() {
-    callback(JSON.parse(data));
-  });
-};
